@@ -1,7 +1,5 @@
 import requests
-import json
-from pymongo import MongoClient
-
+from MongoClass import MongoClass
 
 class CapturaDatos:
     def __init__(self):
@@ -51,11 +49,8 @@ class CapturaDatos:
             jsonClean['Year'] = self.dataJson[ind]['anno']
             jsonClean['Quarter'] = self.dataJson[ind]['trimestre']
             jsonClean['Income'] = self.dataJson[ind]['ingresos_por_mensajes']
-            print(jsonClean)
-
-    #def guardar_en_db(self, datos):
-    #self.collection.insert_one(datos)
-    #print(f"Datos guardados en MongoDB: {datos}")
+            capture = MongoClass()
+            print(f"Id de json almacenado -> {capture.storeData(jsonClean)}")
 
 
 prueba = CapturaDatos()
