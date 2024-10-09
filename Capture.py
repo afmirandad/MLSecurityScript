@@ -1,9 +1,9 @@
 import requests
-from MongoClass import MongoClass
 
 class CapturaDatos:
     def __init__(self):
         self.dataJson = []
+        self.jsonPrepared = []
 
     def Captura(self):
         resultado_busqueda = requests.get(f"https://www.datos.gov.co/resource/m5pi-7cau.json")
@@ -16,7 +16,8 @@ class CapturaDatos:
                 "Year": "",
                 "Quarter": "",
                 "Provider": "",
-                "Income": ""
+                "Income": "",
+                "amountSMS":""
             }
             if self.dataJson[ind]['proveedor'] == "ALMACENES EXITO INVERSIONES S.A.S.":
                 jsonClean['Provider'] = "MOVIL EXITO"
@@ -49,10 +50,6 @@ class CapturaDatos:
             jsonClean['Year'] = self.dataJson[ind]['anno']
             jsonClean['Quarter'] = self.dataJson[ind]['trimestre']
             jsonClean['Income'] = self.dataJson[ind]['ingresos_por_mensajes']
-            capture = MongoClass()
-            print(f"Id de json almacenado -> {capture.storeData(jsonClean)}")
-
-
-prueba = CapturaDatos()
-prueba.Captura()
-prueba.limpieza()
+            jsonClean['amountSMS'] = self.dataJson[ind]['cantidad_de_mensajes']
+            self.jsonPrepared.append(jsonClean)
+        return self.jsonPrepared
